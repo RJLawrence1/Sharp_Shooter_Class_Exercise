@@ -1,29 +1,37 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-// Put this on the Enemy (Capsule) that has a NavMeshAgent.
+// Put this on the Enemy prefab.
 public class EnemyChase : MonoBehaviour
 {
-    [SerializeField] Transform target; // drag the Player/Target here
+    [SerializeField] Transform target; // can leave empty: it finds the Player automatically
 
-    NavMeshAgent agent; // reference to the NavMeshAgent component
+    NavMeshAgent agent;
 
     void Awake()
     {
-        // Find the NavMeshAgent on this same GameObject
         agent = GetComponent<NavMeshAgent>();
     }
 
-    // PART 3 version (stationary target): set the destination once.
-    // void Start()
-    // {
-    //     agent.SetDestination(target.position);
-    // }
+    void Start()
+    {
+        // Spawned prefabs can't hold scene references,
+        // so find the object tagged "Player" if no target was assigned
+        if (target == null)
+        {
+            GameObject player = GameObject.FindWithTag("Player");
+            if (player != null)
+            {
+                target = player.transform;
+            }
+        }
+    }
 
-    // PART 4 version (moving target): keep updating the destination every frame,
-    // so the enemy chases where the target is NOW, not where it was at the start.
     void Update()
     {
+        if (target == null) return;
+
+        // Keep chasing the target's CURRENT position every frame
         agent.SetDestination(target.position);
     }
 }

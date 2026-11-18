@@ -18,4 +18,4 @@ MonoBehaviour:
   cooldown: 0.1
   magazineSize: 30
   automatic: 1
-  zoomFOV: 50
+  zoomFOV: 10
